@@ -49,6 +49,7 @@ def initCatalog():
 def loadData(catalog):
     controller.loadData(catalog)
 
+
 def printFirstVideo(catalog):
     firstVideo = lt.getElement(catalog["videos"], 1)
     print("Titulo: " + firstVideo["title"] + ", Canal: " + firstVideo["channel_title"] +
@@ -65,8 +66,8 @@ while True:
         print("Cargando información de los archivos ....")
         catalog = initCatalog()
         loadData(catalog)
-        print("No. Videos cargados:", lt.size(catalog["videos"])))
-        print("No. Categorías cargadas:", lt.size(catalog["category_names"])))
+        print("No. videos cargados:", lt.size(catalog["videos"]))
+        print("No. categorías cargadas:", lt.size(catalog["category_names"]))
 
         print("\nPRIMER VIDEO CARGADO:")
         printFirstVideo(catalog)
