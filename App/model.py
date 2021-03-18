@@ -38,6 +38,58 @@ los mismos.
 """
 
 # Construccion de modelos
+def newCatalog():
+    catalog = {"videos":None, " Film & Animation":None, "Music":None, "Pets & Animals":None,
+     "Sports":None, "Short Movies":None, "Travel & Events":None, "Gaming":None,
+     "Videoblogging":None, "People & Blogs":None, "Comedy":None, 
+    "Entertainment":None, "News & Politics":None, "Howto & Style":None,
+     "Education":None, "Science & Technology":None, "Non-profits & Activism":None, "Movies":None,
+     "Anime/Animation":None, "Classics":None, "Documentary":None, 
+    "Drama":None, "Family":None, "Foreign":None, "Horror":None, "Sci-Fi/Fantasy":None,
+     "Thriller":None, "Shorts":None, "Shows":None, "Trailers":None}
+
+    """
+    LISTA CON TODOS LOS VIDEOS
+    """
+    catalog["videos"] = lt.newList("ARRAY_LIST")
+
+    """
+    Indices de cada categoria
+    """
+
+    catalog[" Film & Animation"] = mp.newMap()
+    catalog["Music"] = mp.newMap()
+    catalog["Pets & Animals"] = mp.newMap()
+    catalog["Sports"] = mp.newMap()
+    catalog["Short Movies"] = mp.newMap()
+    catalog["Travel & Events"] = mp.newMap()
+    catalog["Gaming"] = mp.newMap()
+    catalog["Videoblogging"] = mp.newMap()
+    catalog["People & Blogs"] = mp.newMap()
+    catalog["Comedy"] = mp.newMap()
+    catalog["Entertainment"] = mp.newMap()
+    catalog["News & Politics"] = mp.newMap()
+    catalog["Howto & Style"] = mp.newMap()
+    catalog["Education"] = mp.newMap()
+    catalog["Science & Technology"] = mp.newMap()
+    catalog["Non-profits & Activism"] = mp.newMap()
+    catalog["Movies"] = mp.newMap()
+    catalog["Anime/Animation"] = mp.newMap()
+    catalog["Classics"] = mp.newMap()
+    catalog["Documentary"] = mp.newMap()
+    catalog["Drama"] = mp.newMap()
+    catalog["Family"] = mp.newMap()
+    catalog["Foreign"] = mp.newMap()
+    catalog["Horror"] = mp.newMap()
+    catalog["Sci-Fi/Fantasy"] = mp.newMap()
+    catalog["Thriller"] = mp.newMap()
+    catalog["Shorts"] = mp.newMap()
+    catalog["Shows"] = mp.newMap()
+    catalog["Trailers"] = mp.newMap()
+
+
+    return catalog
+
 
 def initCatalog():
     catalog = {'videos': None,
