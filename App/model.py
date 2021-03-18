@@ -39,12 +39,85 @@ los mismos.
 
 # Construccion de modelos
 
+def initCatalog():
+    catalog = {'videos': None,
+               'categories': None}
+
+    catalog['videos'] = lt.newList('ARRAY_LIST')
+    catalog['category_names'] = lt.newList('ARRAY_LIST', cmpfunction=compareCategoryIds)
+    catalog['categories'] = mp.newMap(31,
+                                      maptype='CHAINING',
+                                      comparefunction=compareCategory)
+
+    return catalog
+
+
 # Funciones para agregar informacion al catalogo
+
+def addVideo(catalog, video):
+    lt.addLast(catalog['videos'], video)
+    addCategory(catalog, video)
+
+
+def addCategory(catalog, video):
+    try:
+        categories = catalog['categories']
+        category = video['category_id'] 
+
+        existcategory = mp.contains(categories, category)
+        if existcategory:
+            entry = mp.get(categories, category)
+            cat = me.getValue(entry)
+        else:
+            cat = newCategory(category)
+            mp.put(categories, category, cat)
+        lt.addLast(cat['videos'], video)
+    except Exception:
+        return None
+
+
+def addCategoryName(catalog, category):
+    poscategory = lt.isPresent(catalog['category_names'], category['id'])
+    if poscategory == 0:
+        c = newCategoryName(category['name'].strip(), category['id'])
+        lt.addLast(catalog['category_names'], c)
+
 
 # Funciones para creacion de datos
 
+def newCategory(name):
+    category = {'id': "",
+                'videos': None}
+    category['id'] = name
+    category['videos'] = lt.newList('SINGLE_LINKED', compareCategory)
+    return category
+
+
+def newCategoryName(name, id):
+    category = {'id': "", 'name': ""}
+    category['id'] = id
+    category['name'] = name
+    return category
+
+
 # Funciones de consulta
 
-# Funciones utilizadas para comparar elementos dentro de una lista
+# Funciones de comparacion
+
+def compareCategoryIds(category1, category):
+    if (category1 in category['id']):
+        return 0
+    return -1
+
+
+def compareCategory(keyname, category):
+    catentry = me.getKey(category)
+    if (keyname == catentry):
+        return 0
+    elif (keyname > catentry):
+        return 1
+    else:
+        return -1
+
 
 # Funciones de ordenamiento

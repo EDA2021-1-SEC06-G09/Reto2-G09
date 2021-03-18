@@ -24,6 +24,7 @@ import config as cf
 import sys
 import controller
 from DISClib.ADT import list as lt
+from DISClib.ADT import map as mp
 assert cf
 
 
@@ -41,6 +42,20 @@ def printMenu():
 
 catalog = None
 
+def initCatalog():
+    return controller.initCatalog()
+
+
+def loadData(catalog):
+    return controller.loadData(catalog)
+
+
+def printFirstVideo(catalog):
+    firstVideo = lt.getElement(catalog["videos"], 1)
+    print("Titulo: " + firstVideo["title"] + ", Canal: " + firstVideo["channel_title"] +
+        ", Dia de tendencia: " + firstVideo["trending_date"] + ", Pais: " + firstVideo["country"] + 
+        ", Vistas: " + firstVideo["views"] + ", Likes: " + firstVideo["likes"] + ", Dislikes: " + firstVideo["dislikes"])
+
 """
 Menu principal
 """
@@ -49,9 +64,26 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
+        catalog = initCatalog()
+        loadData(catalog)
+        
+        print("No. videos cargados:", mp.size(catalog['videos']))
+        print("No. categorías cargadas:", lt.size(catalog['category_names']))
+
+        print("\nPRIMER VIDEO CARGADO:")
+        printFirstVideo(catalog)
+            
+        print("\nCATEGORIAS CARGADAS:")
+        for n in range(1,lt.size(catalog["category_names"])+1):
+            print(lt.getElement(catalog["category_names"], n))
 
     elif int(inputs[0]) == 2:
-        pass
+        category_name = input("Nombre de la categoria a buscar: ")
+        category_id = getCategoryId(catalog, category_name)
+
+        if category_id != None:
+            country = input("Nombre del pais a buscar: ")
+            number = input("Numero de videos a listar: ")
 
     else:
         sys.exit(0)
