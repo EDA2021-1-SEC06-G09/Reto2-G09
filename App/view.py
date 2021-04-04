@@ -65,7 +65,7 @@ while True:
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
         catalog = initCatalog()
-        loadData(catalog)
+        answer = controller.loadData(catalog)
         print("No. videos cargados:", lt.size(catalog["videos"]))
         print("No. categorías cargadas:", lt.size(catalog["category_names"]))
 
@@ -75,6 +75,9 @@ while True:
         print("\nCATEGORIAS CARGADAS:")
         for n in range(1,lt.size(catalog["category_names"])+1):
             print(lt.getElement(catalog["category_names"], n))
+
+        print("Tiempo [ms]: ", f"{answer[0]:.3f}", "  ||  ",
+              "Memoria [kB]: ", f"{answer[1]:.3f}")
 
     elif int(inputs[0]) == 2:
         category_name = input("Nombre de la categoria a buscar: ")

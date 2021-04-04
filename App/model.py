@@ -45,8 +45,8 @@ def initCatalog():
 
     catalog['videos'] = lt.newList('ARRAY_LIST')
     catalog['category_names'] = lt.newList('ARRAY_LIST', cmpfunction=compareCategoryIds)
-    catalog['categories'] = mp.newMap(31,
-                                      maptype='CHAINING',
+    catalog['categories'] = mp.newMap(32,
+                                      maptype='PROBING', loadfactor=0.3,
                                       comparefunction=compareCategory)
 
     return catalog
