@@ -80,7 +80,9 @@ def loadCategories(catalog):
 # Funciones de ordenamiento
 
 # Funciones de consulta sobre el catálogo
-
+def bestVidCountry(catalog, country):
+    video = model.bestVidCountry(catalog, country)
+    return video
 # ======================================
 # Funciones para medir tiempo y memoria
 # ======================================

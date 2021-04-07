@@ -39,6 +39,7 @@ def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
     print("2- ")
+    print("3- Requerimiento 2, Video con mas dias trending en un Pais.")
 
 catalog = None
 
@@ -55,6 +56,10 @@ def printFirstVideo(catalog):
     print("Titulo: " + firstVideo["title"] + ", Canal: " + firstVideo["channel_title"] +
         ", Dia de tendencia: " + firstVideo["trending_date"] + ", Pais: " + firstVideo["country"] + 
         ", Vistas: " + firstVideo["views"] + ", Likes: " + firstVideo["likes"] + ", Dislikes: " + firstVideo["dislikes"])
+
+def printtrendCountry(result):
+    video = result[0]
+    print("Titulo: " + video["title"] + ", Canal: " + video["channel_title"] + ", Pais: " + video["country"] + ", Numero de dias trending: " + str(result[1]))
 
 """
 Menu principal
@@ -78,6 +83,7 @@ while True:
 
         print("Tiempo [ms]: ", f"{answer[0]:.3f}", "  ||  ",
               "Memoria [kB]: ", f"{answer[1]:.3f}")
+        
 
     elif int(inputs[0]) == 2:
         category_name = input("Nombre de la categoria a buscar: ")
@@ -86,6 +92,12 @@ while True:
         if category_id != None:
             country = input("Nombre del pais a buscar: ")
             number = input("Numero de videos a listar: ")
+
+    elif int(inputs[0]) == 3:
+        country = input("Nombre del Pais a buscar: ")
+        if country != None:
+            result = controller.bestVidCountry(catalog, country)
+        printtrendCountry(result)
 
     else:
         sys.exit(0)
