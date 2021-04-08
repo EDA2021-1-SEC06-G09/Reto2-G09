@@ -39,7 +39,7 @@ def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
     print("2- ")
-    print("3- Requerimiento 2, Video con mas dias trending en un Pais.")
+    print("3- Video con mas dias trending en un Pais.")
 
 catalog = None
 
