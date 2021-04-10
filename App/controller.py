@@ -83,6 +83,13 @@ def loadCategories(catalog):
 def bestVidCountry(catalog, country):
     video = model.bestVidCountry(catalog, country)
     return video
+
+def getCategoryId(catalog, category_name):
+    return model.getCategoryId(catalog, category_name)
+
+
+def bestCountry_Category(catalog, category, country):
+    return model.bestCountry_Category(catalog, category, country)
 # ======================================
 # Funciones para medir tiempo y memoria
 # ======================================

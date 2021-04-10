@@ -46,10 +46,10 @@ def initCatalog():
     catalog['videos'] = lt.newList('ARRAY_LIST')
     catalog['category_names'] = lt.newList('ARRAY_LIST', cmpfunction=compareCategoryIds)
     catalog['categories'] = mp.newMap(32,
-                                      maptype='CHAINING', loadfactor=6.0,
+                                      maptype='CHAINING', loadfactor=4.0,
                                       comparefunction=compareCategory)
 
-    catalog["countries"] = mp.newMap(numelements = 10, maptype="PROBING", loadfactor=0.3 )
+    catalog["countries"] = mp.newMap(numelements = 10, maptype="PROBING", loadfactor=0.5 )
 
     return catalog
 
@@ -130,6 +130,28 @@ def newCategoryName(name, id):
 
 
 # Funciones de consulta
+
+def getCategoryId(catalog, category_name):
+    for n in range(1,lt.size(catalog["category_names"])+1):
+        category = lt.getElement(catalog["category_names"], n)
+        if category["name"].lower() == category_name.lower():
+            return category["id"]
+    return None
+
+#TODO REQUERIMIENTO #1
+
+def bestCountry_Category(catalog, Acategory, Acountry):
+    vids = getVidsByCountry(catalog, Acountry)
+    if(vids):
+        list_of_vids = lt.newList("ARRAY_LIST")
+        for vid in lt.iterator(vids):
+            if(vid["category_id"] == Acategory):
+                lt.addLast(list_of_vids, vid)
+        sorted_list = sa.sort(list_of_vids, compare_views)
+        return sorted_list
+
+
+
 #TODO ahora
 def bestVidCountry(catalog, country):
     vids = getVidsByCountry(catalog, country)
@@ -195,3 +217,6 @@ def compareCountry(country1, country2):
 
 def compareId(video1, video2):
     return video1["video_id"] > video2["video_id"]
+
+def compare_views(video1, video2):
+    return (int(video1["views"]) > int(video2["views"]))

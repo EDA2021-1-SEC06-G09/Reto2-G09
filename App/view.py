@@ -51,6 +51,28 @@ def loadData(catalog):
     return controller.loadData(catalog)
 
 
+def getCategoryId(catalog, category_name):
+    category_id = controller.getCategoryId(catalog, category_name)
+    if category_id == None:
+        print("\nNo se encontró la categoría")
+    return category_id
+
+def bestCountry_Category(catalog, category, country):
+    return controller.bestCountry_Category(catalog, category, country)
+
+def printCountry_Category(list, number_of_vids):
+    videos_printed = 0
+    for video in lt.iterator(list):
+
+        print("\nDia de tendencia: " + video["trending_date"] + ", Titulo: " + video["title"] +
+            ", Canal: " + video["channel_title"] +", Tiempo de publicacion: " +video["publish_time"] +
+            ", Vistas: " + video["views"] + ", Likes: " + video["likes"] + ", Dislikes: " + video["dislikes"])
+
+        videos_printed +=1
+        if(videos_printed == int(number_of_vids)):
+            break
+
+
 def printFirstVideo(catalog):
     firstVideo = lt.getElement(catalog["videos"], 1)
     print("Titulo: " + firstVideo["title"] + ", Canal: " + firstVideo["channel_title"] +
@@ -88,10 +110,10 @@ while True:
     elif int(inputs[0]) == 2:
         category_name = input("Nombre de la categoria a buscar: ")
         category_id = getCategoryId(catalog, category_name)
-
-        if category_id != None:
+        if(category_id != None):
             country = input("Nombre del pais a buscar: ")
-            number = input("Numero de videos a listar: ")
+            number = input("numero de videos a listar: ")
+            printCountry_Category(bestCountry_Category(catalog, category_id, country), number)
 
     elif int(inputs[0]) == 3:
         country = input("Nombre del Pais a buscar: ")
