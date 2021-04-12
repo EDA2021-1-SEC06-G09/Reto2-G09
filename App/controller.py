@@ -32,6 +32,7 @@ El controlador se encarga de mediar entre la vista y el modelo.
 
 # Inicialización del Catálogo de videos
 
+
 def initCatalog():
     return model.initCatalog()
 
@@ -76,13 +77,15 @@ def loadCategories(catalog):
         model.addCategoryName(catalog, category)
 
 
-
 # Funciones de ordenamiento
 
 # Funciones de consulta sobre el catálogo
+
+
 def bestVidCountry(catalog, country):
     video = model.bestVidCountry(catalog, country)
     return video
+
 
 def getCategoryId(catalog, category_name):
     return model.getCategoryId(catalog, category_name)
@@ -90,9 +93,16 @@ def getCategoryId(catalog, category_name):
 
 def bestCountry_Category(catalog, category, country):
     return model.bestCountry_Category(catalog, category, country)
+
+
+def getTrendCategory(catalog, category_id):
+    return model.getTrendCategory(catalog, category_id)
+
+
 # ======================================
 # Funciones para medir tiempo y memoria
 # ======================================
+
 
 def getTime():
     """

@@ -39,6 +39,7 @@ los mismos.
 
 # Construccion de modelos
 
+
 def initCatalog():
     catalog = {'videos': None,
                'categories': None}
@@ -49,7 +50,7 @@ def initCatalog():
                                       maptype='CHAINING', loadfactor=4.0,
                                       comparefunction=compareCategory)
 
-    catalog["countries"] = mp.newMap(numelements = 10, maptype="PROBING", loadfactor=0.5 )
+    catalog["countries"] = mp.newMap(numelements=10, maptype="PROBING", loadfactor=0.5)
 
     return catalog
 
@@ -65,7 +66,7 @@ def addVideo(catalog, video):
 def addCategory(catalog, video):
     try:
         categories = catalog['categories']
-        category = video['category_id'] 
+        category = video['category_id']
 
         existcategory = mp.contains(categories, category)
         if existcategory:
@@ -86,7 +87,7 @@ def addCategoryName(catalog, category):
         lt.addLast(catalog['category_names'], c)
 
 
-#TODO: Req 2
+# TODO: Req 2
 def addVideoCountry(catalog, video):
     try:
         countries = catalog["countries"]
@@ -102,7 +103,6 @@ def addVideoCountry(catalog, video):
         lt.addLast(country["videos"], video)
     except Exception:
         return None
-
 
 
 def newCountry(country):
@@ -132,13 +132,14 @@ def newCategoryName(name, id):
 # Funciones de consulta
 
 def getCategoryId(catalog, category_name):
-    for n in range(1,lt.size(catalog["category_names"])+1):
+    for n in range(1, lt.size(catalog["category_names"])+1):
         category = lt.getElement(catalog["category_names"], n)
         if category["name"].lower() == category_name.lower():
             return category["id"]
     return None
 
-#TODO REQUERIMIENTO #1
+# TODO REQUERIMIENTO #1
+
 
 def bestCountry_Category(catalog, Acategory, Acountry):
     vids = getVidsByCountry(catalog, Acountry)
@@ -151,13 +152,12 @@ def bestCountry_Category(catalog, Acategory, Acountry):
         return sorted_list
 
 
-
-#TODO ahora
+# TODO ahora
 def bestVidCountry(catalog, country):
     vids = getVidsByCountry(catalog, country)
 
     sortedVids = sa.sort(vids, compareId)
-    
+
     if(sortedVids):
         previousId = ""
         count = 1
@@ -165,7 +165,7 @@ def bestVidCountry(catalog, country):
         MaxCount = 0
         for vid in lt.iterator(sortedVids):
             if(vid["video_id"] == previousId):
-                count +=1
+                count += 1
             else:
                 count = 1
             previousId = vid["video_id"]
@@ -175,9 +175,7 @@ def bestVidCountry(catalog, country):
         print(MaxCount)
         print(bestVid)
         return bestVid, MaxCount
-        
 
-            
 
 def getVidsByCountry(catalog, country):
     country = mp.get(catalog["countries"], country)
@@ -186,8 +184,37 @@ def getVidsByCountry(catalog, country):
     return None
 
 
+def getTrendCategory(catalog, category_id):
+    category = mp.get(catalog["categories"], category_id)
+    if category:
+        videos = me.getValue(category)["videos"]
+        sorted_list = sortVideoTitleTrend(videos)
+
+        count = 1
+        previousTitle = ""
+        previousDate = ""
+        trend = None
+        trendcount = 0
+
+        for video in lt.iterator(sorted_list):
+            if video["title"] != previousTitle:
+                if (count > trendcount):
+                    trend = video
+                    trendcount = count
+                count = 1
+            elif (video["trending_date"] != previousDate):
+                count += 1
+            previousTitle = video["title"]
+            previousDate = video["trending_date"]
+
+        return trend, trendcount
+
+    else:
+        return None
+
 
 # Funciones de comparacion
+
 
 def compareCategoryIds(category1, category):
     if (category1 in category['id']):
@@ -204,6 +231,7 @@ def compareCategory(keyname, category):
     else:
         return -1
 
+
 def compareCountry(country1, country2):
     if country1 == country2:
         return 0
@@ -212,11 +240,24 @@ def compareCountry(country1, country2):
     else:
         return 0
 
-# Funciones de ordenamiento
-
 
 def compareId(video1, video2):
     return video1["video_id"] > video2["video_id"]
 
+
 def compare_views(video1, video2):
     return (int(video1["views"]) > int(video2["views"]))
+
+
+def cmpVideosByTitle(video1, video2):
+    return (video1["title"] < video2["title"])
+
+
+def cmpVideosByTrend(video1, video2):
+    return (video1['trending_date'] < video2['trending_date'])
+
+# Funciones de ordenamiento
+
+
+def sortVideoTitleTrend(videos):
+    return sa.sort(sa.sort(videos, cmpVideosByTrend), cmpVideosByTitle)
