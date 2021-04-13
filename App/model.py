@@ -118,7 +118,7 @@ def newCategory(name):
     category = {'id': "",
                 'videos': None}
     category['id'] = name
-    category['videos'] = lt.newList('SINGLE_LINKED', compareCategory)
+    category['videos'] = lt.newList('ARRAY_LIST', compareCategory)
     return category
 
 
@@ -186,10 +186,12 @@ def getVidsByCountry(catalog, country):
 
 def getTrendCategory(catalog, category_id):
     category = mp.get(catalog["categories"], category_id)
+    print("cogio el mapa categoria")
     if category:
         videos = me.getValue(category)["videos"]
+        print("saco los videos de la categoria")
         sorted_list = sortVideoTitleTrend(videos)
-
+        print("videos ordenados")
         count = 1
         previousTitle = ""
         previousDate = ""
