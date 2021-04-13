@@ -99,6 +99,10 @@ def getTrendCategory(catalog, category_id):
     return model.getTrendCategory(catalog, category_id)
 
 
+def getBestTag(catalog, tag, country, number):
+    return model.getBestTag(catalog, tag, country, number)
+
+
 # ======================================
 # Funciones para medir tiempo y memoria
 # ======================================

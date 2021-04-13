@@ -93,6 +93,19 @@ def printTrendCategory(result, cateogry_id):
           category_id + ", Numero de dias: " + str(result[1]))
 
 
+def printBestTag(videos, number):
+    if number < lt.size(videos):
+        toprange = number+1
+    else:
+        toprange = lt.size(videos)+1
+    for n in range (1,toprange):
+        video = lt.getElement(videos, n)
+        print("\nTitulo: " + video["title"] + ", Canal: " + video["channel_title"] +
+            ", Tiempo de publicacion: " + video["publish_time"] + ", Vistas: " + video["views"] + ", Likes: " +
+            video["likes"] + ", Dislikes: " + video["dislikes"] + ", Tags: " + video["tags"])
+
+
+
 def printtrendCountry(result):
     video = result[0]
     print("Titulo: " + video["title"] + ", Canal: " + video["channel_title"] + ", Pais: " + video["country"] + ", Numero de dias trending: " + str(result[1]))
@@ -146,7 +159,15 @@ while True:
                 printTrendCategory(result, category_id)
 
     elif int(inputs[0]) == 5:
-        pass
+        tag = input("Nombre del tag a buscar: ")
+        country = input("Nombre del pais a buscar: ")
+        number = input("Numero de videos a listar: ")
+
+        if mp.contains(catalog['countries'], country):
+            result = controller.getBestTag(catalog, tag, country, number)
+
+            print("\nTOP " + number + " VIDEOS DE " + tag.upper() + ":")
+            printBestTag(result, int(number))
 
     else:
         catalog.clear()

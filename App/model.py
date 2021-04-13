@@ -30,6 +30,7 @@ from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
 from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
+from DISClib.Algorithms.Sorting import mergesort as ma
 assert cf
 
 """
@@ -186,12 +187,10 @@ def getVidsByCountry(catalog, country):
 
 def getTrendCategory(catalog, category_id):
     category = mp.get(catalog["categories"], category_id)
-    print("cogio el mapa categoria")
     if category:
         videos = me.getValue(category)["videos"]
-        print("saco los videos de la categoria")
         sorted_list = sortVideoTitleTrend(videos)
-        print("videos ordenados")
+
         count = 1
         previousTitle = ""
         previousDate = ""
@@ -213,6 +212,25 @@ def getTrendCategory(catalog, category_id):
 
     else:
         return None
+
+
+def getBestTag(catalog, tag, country, number):
+    videos = getVidsByCountry(catalog, country)
+    sorted_list = ma.sort(videos, compare_views)
+    tag1 = '"' + tag + '"'
+    result = lt.newList('ARRAY_LIST')
+    titles = lt.newList('ARRAYLIST')
+
+    i = 0
+    for video in lt.iterator(sorted_list):
+        if tag1 in video['tags'] and not lt.isPresent(titles, video['title']):
+            i += 1
+            lt.addLast(result, video)
+            lt.addLast(titles, video['title'])
+        if i == number:
+            break
+
+    return result
 
 
 # Funciones de comparacion
@@ -262,4 +280,4 @@ def cmpVideosByTrend(video1, video2):
 
 
 def sortVideoTitleTrend(videos):
-    return sa.sort(sa.sort(videos, cmpVideosByTrend), cmpVideosByTitle)
+    return ma.sort(ma.sort(videos, cmpVideosByTrend), cmpVideosByTitle)
