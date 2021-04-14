@@ -37,12 +37,13 @@ operación solicitada
 
 
 def printMenu():
-    print("Bienvenido")
+    print("\nBienvenido")
     print("1- Cargar información en el catálogo")
-    print("2- Videos con mas views para una categoria y pais")
-    print("3- Video con mas dias trending en un pais")
-    print("4- Video con mas dias de trending para una categoria")
-    print("5- Videos con mas like para un tag y pais")
+    print("2- Videos con más views para una categoría y país")
+    print("3- Video con más días trending en un país")
+    print("4- Video con más dias de trending para una categoría")
+    print("5- Videos con más likes para un tag y país")
+    print("Presione cualquier otra tecla para salir")
 
 
 catalog = None
@@ -63,14 +64,13 @@ def getCategoryId(catalog, category_name):
     return category_id
 
 
-def bestCountry_Category(catalog, category, country):
-    return controller.bestCountry_Category(catalog, category, country)
+def bestCountryCategory(catalog, category, country):
+    return controller.bestCountryCategory(catalog, category, country)
 
 
-def printCountry_Category(list, number_of_vids):
+def printCountryCategory(list, number_of_vids):
     videos_printed = 0
     for video in lt.iterator(list):
-
         print("\nDia de tendencia: " + video["trending_date"] + ", Titulo: " + video["title"] +
               ", Canal: " + video["channel_title"] + ", Tiempo de publicacion: " + video["publish_time"] +
               ", Vistas: " + video["views"] + ", Likes: " + video["likes"] + ", Dislikes: " + video["dislikes"])
@@ -98,12 +98,11 @@ def printBestTag(videos, number):
         toprange = number+1
     else:
         toprange = lt.size(videos)+1
-    for n in range (1,toprange):
+    for n in range(1, toprange):
         video = lt.getElement(videos, n)
         print("\nTitulo: " + video["title"] + ", Canal: " + video["channel_title"] +
-            ", Tiempo de publicacion: " + video["publish_time"] + ", Vistas: " + video["views"] + ", Likes: " +
-            video["likes"] + ", Dislikes: " + video["dislikes"] + ", Tags: " + video["tags"])
-
+              ", Tiempo de publicacion: " + video["publish_time"] + ", Vistas: " + video["views"] + ", Likes: " +
+              video["likes"] + ", Dislikes: " + video["dislikes"] + ", Tags: " + video["tags"])
 
 
 def printtrendCountry(result):
@@ -141,7 +140,13 @@ while True:
         if category_id is not None:
             country = input("Nombre del pais a buscar: ")
             number = input("Numero de videos a listar: ")
-            printCountry_Category(bestCountry_Category(catalog, category_id, country), number)
+            result = bestCountryCategory(catalog, category_id, country)
+            if result is not None:
+                printCountryCategory(result, number)
+            else:
+                print("\nNo se encontró información para el país")
+        else:
+            print("\nNo se encontró información para la categoría")
 
     elif int(inputs[0]) == 3:
         country = input("Nombre del pais a buscar: ")
@@ -155,8 +160,9 @@ while True:
 
         if category_id is not None:
             result = controller.getTrendCategory(catalog, category_id)
-            if result is not None:
-                printTrendCategory(result, category_id)
+            printTrendCategory(result, category_id)
+        else:
+            print("\nNo se encontró información para la categoría")
 
     elif int(inputs[0]) == 5:
         tag = input("Nombre del tag a buscar: ")
@@ -166,8 +172,13 @@ while True:
         if mp.contains(catalog['countries'], country):
             result = controller.getBestTag(catalog, tag, country, number)
 
-            print("\nTOP " + number + " VIDEOS DE " + tag.upper() + ":")
-            printBestTag(result, int(number))
+            if result is not None:
+                print("\nTOP " + number + " VIDEOS DE " + tag.upper() + ":")
+                printBestTag(result, int(number))
+            else:
+                print("\nNo se encontró infotmación para el tag")
+        else:
+            print("\nNo se encontró información para el país")
 
     else:
         catalog.clear()

@@ -40,7 +40,7 @@ def initCatalog():
 # Funciones para la carga de datos
 
 def loadData(catalog):
-    print("Loading Data")
+    print("Cargando datos...")
     delta_time = -1.0
     delta_memory = -1.0
 
@@ -91,8 +91,8 @@ def getCategoryId(catalog, category_name):
     return model.getCategoryId(catalog, category_name)
 
 
-def bestCountry_Category(catalog, category, country):
-    return model.bestCountry_Category(catalog, category, country)
+def bestCountryCategory(catalog, category, country):
+    return model.bestCountryCategory(catalog, category, country)
 
 
 def getTrendCategory(catalog, category_id):

@@ -88,7 +88,6 @@ def addCategoryName(catalog, category):
         lt.addLast(catalog['category_names'], c)
 
 
-# TODO: Req 2
 def addVideoCountry(catalog, video):
     try:
         countries = catalog["countries"]
@@ -139,21 +138,21 @@ def getCategoryId(catalog, category_name):
             return category["id"]
     return None
 
-# TODO REQUERIMIENTO #1
 
-
-def bestCountry_Category(catalog, Acategory, Acountry):
+# Requerimiento 1
+def bestCountryCategory(catalog, Acategory, Acountry):
     vids = getVidsByCountry(catalog, Acountry)
-    if(vids):
+    if vids:
         list_of_vids = lt.newList("ARRAY_LIST")
         for vid in lt.iterator(vids):
             if(vid["category_id"] == Acategory):
                 lt.addLast(list_of_vids, vid)
-        sorted_list = sa.sort(list_of_vids, compare_views)
+        sorted_list = ma.sort(list_of_vids, compare_views)
         return sorted_list
+    return None
 
 
-# TODO ahora
+# Requerimiento 2
 def bestVidCountry(catalog, country):
     vids = getVidsByCountry(catalog, country)
 
@@ -179,12 +178,13 @@ def bestVidCountry(catalog, country):
 
 
 def getVidsByCountry(catalog, country):
-    country = mp.get(catalog["countries"], country)
+    country = mp.get(catalog["countries"], country.lower())
     if country:
         return me.getValue(country)["videos"]
     return None
 
 
+# Requerimiento 3
 def getTrendCategory(catalog, category_id):
     category = mp.get(catalog["categories"], category_id)
     if category:
@@ -209,28 +209,30 @@ def getTrendCategory(catalog, category_id):
             previousDate = video["trending_date"]
 
         return trend, trendcount
-
-    else:
-        return None
+    return None
 
 
+# Requerimiento 4
 def getBestTag(catalog, tag, country, number):
     videos = getVidsByCountry(catalog, country)
-    sorted_list = ma.sort(videos, compare_views)
-    tag1 = '"' + tag + '"'
-    result = lt.newList('ARRAY_LIST')
-    titles = lt.newList('ARRAYLIST')
 
-    i = 0
-    for video in lt.iterator(sorted_list):
-        if tag1 in video['tags'] and not lt.isPresent(titles, video['title']):
-            i += 1
-            lt.addLast(result, video)
-            lt.addLast(titles, video['title'])
-        if i == number:
-            break
+    if videos:
+        sorted_list = ma.sort(videos, compare_views)
+        tag1 = '"' + tag.lower() + '"'
+        result = lt.newList('ARRAY_LIST')
+        titles = lt.newList('ARRAYLIST')
 
-    return result
+        i = 0
+        for video in lt.iterator(sorted_list):
+            if tag1 in video['tags'].lower() and not lt.isPresent(titles, video['title']):
+                i += 1
+                lt.addLast(result, video)
+                lt.addLast(titles, video['title'])
+            if i == number:
+                break
+
+        return result
+    return None
 
 
 # Funciones de comparacion
