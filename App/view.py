@@ -138,7 +138,7 @@ while True:
         category_id = getCategoryId(catalog, category_name)
 
         if category_id is not None:
-            country = input("Nombre del pais a buscar: ")
+            country = input("Nombre del pais a buscar (en minusculas): ")
             number = input("Numero de videos a listar: ")
             result = bestCountryCategory(catalog, category_id, country)
             if result is not None:
@@ -149,7 +149,7 @@ while True:
             print("\nNo se encontró información para la categoría")
 
     elif int(inputs[0]) == 3:
-        country = input("Nombre del pais a buscar: ")
+        country = input("Nombre del pais a buscar (en minusculas): ")
         if country is not None:
             result = controller.bestVidCountry(catalog, country)
             printtrendCountry(result)
@@ -166,7 +166,7 @@ while True:
 
     elif int(inputs[0]) == 5:
         tag = input("Nombre del tag a buscar: ")
-        country = input("Nombre del pais a buscar: ")
+        country = input("Nombre del pais a buscar (en minusculas): ")
         number = input("Numero de videos a listar: ")
 
         if mp.contains(catalog['countries'], country):

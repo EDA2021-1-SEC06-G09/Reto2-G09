@@ -142,12 +142,15 @@ def getCategoryId(catalog, category_name):
 # Requerimiento 1
 def bestCountryCategory(catalog, Acategory, Acountry):
     vids = getVidsByCountry(catalog, Acountry)
+    #Obtiene la lista de videos correspondientes a un pais, a partir de un mapa: O(1)
     if vids:
         list_of_vids = lt.newList("ARRAY_LIST")
         for vid in lt.iterator(vids):
             if(vid["category_id"] == Acategory):
                 lt.addLast(list_of_vids, vid)
+        #recorre todos los videos en la lista de un cierto pais: O(m) donde m es el numero de videos en esta lista
         sorted_list = ma.sort(list_of_vids, compare_views)
+        #uso de merge para ordenar la lista de videos de tamaño m: mlog(m)
         return sorted_list
     return None
 
@@ -155,9 +158,9 @@ def bestCountryCategory(catalog, Acategory, Acountry):
 # Requerimiento 2
 def bestVidCountry(catalog, country):
     vids = getVidsByCountry(catalog, country)
-
+    #Obtiene la lista de videos correspondientes a un pais, a partir de un mapa: O(1)
     sortedVids = sa.sort(vids, compareId)
-
+    #uso de merge para ordenar la lista de videos de tamaño m: mlog(m)
     if(sortedVids):
         previousId = ""
         count = 1
@@ -172,13 +175,13 @@ def bestVidCountry(catalog, country):
             if(count >= MaxCount):
                 MaxCount = count
                 bestVid = vid
-        print(MaxCount)
-        print(bestVid)
+        #recorre todos los videos en la lista de un cierto pais: O(m) donde m es el numero de videos en esta lista
         return bestVid, MaxCount
 
 
 def getVidsByCountry(catalog, country):
-    country = mp.get(catalog["countries"], country.lower())
+    country = mp.get(catalog["countries"], country)
+    #Obtiene la lista de videos correspondientes a un pais, a partir de un mapa: O(1)
     if country:
         return me.getValue(country)["videos"]
     return None
